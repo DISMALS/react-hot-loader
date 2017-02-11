@@ -191,6 +191,17 @@ module.exports = function plugin(args) {
             // class property node value is nullable
             if (node.value && node.value.type === 'ArrowFunctionExpression') {
               const isAsync = node.value.async;
+
+              // TODO: https://github.com/babel/babel/issues/5078
+              if (isAsync) {
+                /* eslint-disable no-console, max-len */
+                console.warn('-----');
+                console.warn('Async arrow functions will not be hot swapped so you have to reload manually');
+                console.warn('-----');
+                /* eslint-enable no-console, max-len */
+                return;
+              }
+
               const params = node.value.params;
               const newIdentifier = t.identifier(`__${node.key.name}__REACT_HOT_LOADER__`);
 
